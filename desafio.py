@@ -1,146 +1,110 @@
-def menu_message():
-    print("+--------------------+-----------+")
-    print("|      Depósito      |     1     |")
-    print("+--------------------+-----------+")
-    print("|      Saque         |     2     |")
-    print("+--------------------+-----------+")
-    print("|      Extrato       |     3     |")
-    print("+--------------------+-----------+")
-    print("|      Sair          |     0     |")
-    print("+--------------------+-----------+")
+def statement_message(option, balance_amount, value):
+    if option == 1:
+        return f"""
+{"+" + "-" * 35 + "+"}
+{f"| {"Deposit amount":^22}|" + f"{f"R${value:.2f}":<11}|"}
+{"+" + "-" * 35 + "+"}
+{f"| {"Balance":^22}|" + f"{f"R${balance_amount:.2f}":<11}|"}
+{"+" + "-" * 35 + "+"}
+"""
+
+    elif option == 2:
+        return f"""
+{"+" + "-" * 35 + "+"}
+{f"| {"withdrawal amount":^22}|" + f"{f"R${value:.2f}":<11}|"}
+{"+" + "-" * 35 + "+"}
+{f"| {"Balance":^22}|" + f"{f"R${balance_amount:.2f}":<11}|"}
+{"+" + "-" * 35 + "+"}
+"""
 
 
-def action_message(message):
+def menu_message(): # options system 
+    print("+" + "-" * 35 + "+")
+    print(f"| {"BANK DEPOSIT":^22}|" + f"{"1":^11}|")
+    print("+" + "-" * 35 + "+")
+    print(f"| {"BAND WITHDRAWAL":^22}|" + f"{"2":^11}|")
+    print("+" + "-" * 35 + "+")
+    print(f"| {"BANK STATEMENT":^22}|" + f"{"3":^11}|")
+    print("+" + "-" * 35 + "+")
+    print(f"| {"GO OUT":^22}|" + f"{"0":^11}|")
+    print("+" + "-" * 35 + "+")
+
+
+def option_message(argument): # description
     print()
-    print("+" + "-" * 32 + "+")
-    print(f"| {message:^30} |")
-    print("+" + "-" * 32 + "+")
-    
-
-def deposit_message(amount, balance):
-    print("\n")
-    print("+" + "-" * 32 + "+")
-    print(f"| {"Depósito realizado com sucesso.":^30}|")
-    print("+" + "-" * 32 + "+")
-    print(f"|{f"Valor depositado":<19} | {f"R${amount:.2f}":<10}|")
-    print("+" + "-" * 32 + "+")
-    print(f"|{f"Saldo":<19} | {f"R${balance:.2f}":<10}|")
-    print("+" + "-" * 32 + "+")
-    print("\n")
+    print("+" + "-" * 35 + "+")
+    print(f"| {argument:^33} |")
+    print("+" + "-" * 35 + "+")
+    print()
 
 
-def withdrawal(withdrawal, balance):
-    print("\n")
-    print("+" + "-" * 32 + "+")
-    print(f"| {"Retirada realizada com sucesso.":^30}|")
-    print("+" + "-" * 32 + "+")
-    print(f"|{f"Valor retidado":<20} | {f"R${withdrawal:.2f}":<9}|")
-    print("+" + "-" * 32 + "+")
-    print(f"|{f"Saldo":<20} | {f"R${balance:.2f}":<9}|")
-    print("+" + "-" * 32 + "+")
-    print("\n")
+# data
+bank_deposit = 0
+limit = 500
+bank_statement = ""
+number_of_withdrawals = 0
+WITHDRAWAL_LIMIT = 3
 
-
-# start data
-saldo = 0
-limite = 500
-extrato = ""
-numero_saque = 0
-LIMITE_SAQUE = 3
-# end data
-
-
+# First loop
 while True:
+    # return options
     menu_message()
-    option = input("\n=> ")
 
-    # START DEPOSIT
-    if option == "1":
-        action_message("Depósito")
+    option = int(input("\nChoose an option: ")) # option's person
 
-        print("Valor a ser depositado")
-        valor_depósito = float(input("R$: "))
+    if option == 1: # deposit
+        option_message("Bank deposit")
 
-        if valor_depósito > 0:
+        while True: # start bank deposit loop
 
-            saldo += valor_depósito
+            # deposit_message
+            deposit = float(input("Amont to be deposited \nR$ "))
 
-            # extrato
-            verde = f"\033[32m{valor_depósito:.2f}\033[m"
-            extrato += f"""
-{"+" + "-" * 32 + "+"}
-{f"|{f"Valor depositado":<19} | {f"R${verde}":<9}|"}
-{"+" + "-" * 32 + "+"}
-{f"|{f"Saldo":<19} | {f"R${saldo:.2f}":<10}|"}
-{"+" + "-" * 32 + "+"}
-"""
+            if deposit < 0:
+                print("\nthis value is negative, enter only positive values!\n")
+            
+            elif deposit > 0:
+                bank_deposit += deposit
+                
 
-            deposit_message(valor_depósito, saldo)
-        
-        else:
-            print("O valor não pode ser negativo, tente novamente.")
-    #   END DEPOSIT
-
-    # INICIO WITHDRAWAL
-    elif option == "2":
-        action_message("Saque")
-
-        if numero_saque != LIMITE_SAQUE:
-
-            if saldo > 0:
-                print(f"""
-Valor a ser sacado.
-Saldo: R$ {saldo:.2f}
-""")
-                saque = float(input("R$ "))
-                if saque > limite or saque > saldo:
-                    print(f"""
-O valor a ser sacado é maior que o limite
-Limite: R$ {limite:.2f}
-""")
-                else:
-                    saldo -= saque
-                    numero_saque += 1
-
-                    withdrawal(saque, saldo)
-                    
-                    # extrato
-                    extrato += f"""
-{"+" + "-" * 32 + "+"}
-{f"|{f"Valor retirado":<20} | {f"\033[1;31mR${saque:.2f}\033[m":<9} |"}
-{"+" + "-" * 32 + "+"}
-{f"|{f"Saldo":<20} | {f"R${saldo:.2f}":<9}|"}
-{"+" + "-" * 32 + "+"}
-"""
-                    
-
+                bank_statement += statement_message(1, bank_deposit, deposit)
+                print(bank_statement)
+                break
+            
             else:
-                print(f"""
-Faça um deposoto.
-saldo: R$ {saldo:.2f}
-""")
-        else:
-            print("""
-Voçê exgotou o limite de saque diario! Volte amanhã.
-""")
-    # END WITHDRAWAL
+                print("\nThis does not correspond to a value.\n")
+        # end band deposit loop
 
-    # START EXTRACT
-    elif option == "3":
-        action_message("Extrato")
+    elif option == 2: # withdrawal
+        option_message("Bank withdrawal")
 
-        print(extrato)
-    # END EXTRACT
+        while True: # start bank withdrawal loop
+            
+            if bank_deposit == 0:
+                print("\nNo bank balance for withdrawal.\n")
+                break
+            else:
+                if number_of_withdrawals == WITHDRAWAL_LIMIT:
+                    print("\nYou've reached the withdrawal limit.\n")
+                    break
+                else:
+                    withdrawal = float(input("Amount to be withdrawal \nR$ "))
 
-    # START END
-    elif option == "0":
+                    bank_deposit -= withdrawal
+                    number_of_withdrawals += 1
+
+                    bank_statement += statement_message(2, bank_deposit, withdrawal)
+                    print(bank_statement)
+                    break
+        # end band withdrawal loop
+
+    elif option == 3: # statement
+        option_message("Bank statement")
+        print(bank_statement)
+
+    
+    elif option == 0: # break choice
         break
-    # END END
 
-    # OPÇÃO EXTRA
-    else:
-        print("""
-
-Operação invalida, por favor selecione novamente a operação desejada.
-              
-""")
+    else: # return loop
+        print("There is no such choice!")

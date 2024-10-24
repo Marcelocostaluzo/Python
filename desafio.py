@@ -90,12 +90,19 @@ while True:
                 else:
                     withdrawal = float(input("Amount to be withdrawal \nR$ "))
 
-                    bank_deposit -= withdrawal
-                    number_of_withdrawals += 1
+                    if withdrawal > limit:
+                        print(f"\nThis value is greater than the limit \nLimit R${limit}")
+                    
+                    elif withdrawal > bank_deposit:
+                        print(f"\nThis value is greater than your bank balance \nBalance R${bank_deposit}")
+                    
+                    else:
+                        bank_deposit -= withdrawal
+                        number_of_withdrawals += 1
 
-                    bank_statement += statement_message(2, bank_deposit, withdrawal)
-                    print(bank_statement)
-                    break
+                        bank_statement += statement_message(2, bank_deposit, withdrawal)
+                        print(bank_statement)
+                        break
         # end band withdrawal loop
 
     elif option == 3: # statement

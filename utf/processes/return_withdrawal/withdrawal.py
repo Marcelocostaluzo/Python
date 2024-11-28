@@ -8,7 +8,7 @@ import interface.statement
 
 def withdrawal():
     while True:
-        if utf.data.return_data.number_of_withdrawals < utf.data.return_data.WITHDRAWAL_LIMIT:
+        if utf.data.return_data.number_of_transactions < utf.data.return_data.DAILY_TRANSACTIONS:
             value_Withdrawal = float(input("Digite o valor do saque: "))
 
             if value_Withdrawal <= 0:
@@ -20,7 +20,7 @@ def withdrawal():
             else:
                 if value_Withdrawal < utf.data.return_data.limit:
                     utf.data.return_data.bank_deposit -= value_Withdrawal
-                    utf.data.return_data.number_of_withdrawals += 1
+                    utf.data.return_data.number_of_transactions += 1
 
                     utf.data.return_data.bank_statement += interface.statement.statement_message(2, utf.data.return_data.bank_deposit, value_Withdrawal)
 

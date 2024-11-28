@@ -1,27 +1,36 @@
 import sys
 import os
 
-# Adicione o diretório base ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
-
-# Agora você deve ser capaz de importar os módulos corretamente
 import utf.data.return_data
+import utf.data.return_time
 import interface.statement
 
 def deposit():
     while True:
-        value_Deposit = float(input("Digite o valor do deposito: "))
+        print(f"\ndia atual: {utf.data.return_time.data_update()}\nNumero de transações: {utf.data.return_data.number_of_transactions}\n")
 
-        if value_Deposit <= 0:
-            print("\nValor digitado incorretamente. Tente novamente!\n")
+        if utf.data.return_data.number_of_transactions < utf.data.return_data.DAILY_TRANSACTIONS:
+            value_Deposit = float(input("Digite o valor do deposito: "))
 
-        elif value_Deposit > 0:
-            utf.data.return_data.bank_deposit += value_Deposit
-            utf.data.return_data.bank_statement += interface.statement.statement_message(1, utf.data.return_data.bank_deposit, value_Deposit)
+            if value_Deposit <= 0:
+                print("\nValor digitado incorretamente. Tente novamente!\n")
 
-            print(interface.statement.statement_message(1, utf.data.return_data.bank_deposit, value_Deposit))
+            elif value_Deposit > 0:
+                utf.data.return_data.bank_deposit += value_Deposit
+                utf.data.return_data.number_of_transactions += 1
+                
+                if utf.data.return_data.number_of_transactions == 1:
+                    utf.data.return_data.transaction_data.append(utf.data.return_time.data_update())
+                
+                utf.data.return_data.bank_statement += interface.statement.statement_message(1, utf.data.return_data.bank_deposit, value_Deposit, utf.data.return_time.data_update())
 
-            break
+                print(interface.statement.statement_message(1, utf.data.return_data.bank_deposit, value_Deposit, utf.data.return_time.data_update()))
 
+                break
+
+            else:
+                print("error")
         else:
-            print("error")
+            print(f"\nVocê chegou no limite de transações diarias\n")
+            break

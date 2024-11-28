@@ -2,5 +2,7 @@
 bank_deposit = 0
 limit = 500
 bank_statement = ""
-number_of_withdrawals = 0
-WITHDRAWAL_LIMIT = 3
+number_of_transactions = 0
+DAILY_TRANSACTIONS = 10
+
+transaction_data = []

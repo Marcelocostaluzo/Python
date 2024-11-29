@@ -8,7 +8,10 @@ import interface.statement
 
 def deposit():
     while True:
-        print(f"\ndia atual: {utf.data.return_time.data_update()}\nNumero de transações: {utf.data.return_data.number_of_transactions}\n")
+        if utf.data.return_data.number_of_transactions >= 1:
+            if utf.data.return_data.transaction_data[0][:2] != utf.data.return_time.data_update()[:2]:
+                utf.data.return_data.number_of_transactions = 0
+
 
         if utf.data.return_data.number_of_transactions < utf.data.return_data.DAILY_TRANSACTIONS:
             value_Deposit = float(input("Digite o valor do deposito: "))

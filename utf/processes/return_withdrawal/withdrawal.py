@@ -8,6 +8,10 @@ import interface.statement
 
 def withdrawal():
     while True:
+        if utf.data.return_data.number_of_transactions >= 1:
+            if utf.data.return_data.transaction_data[0][:2] != utf.data.return_time.data_update()[:2]:
+                utf.data.return_data.number_of_transactions = 0
+
         if utf.data.return_data.number_of_transactions < utf.data.return_data.DAILY_TRANSACTIONS:
             value_Withdrawal = float(input("Digite o valor do saque: "))
 
@@ -22,9 +26,9 @@ def withdrawal():
                     utf.data.return_data.bank_deposit -= value_Withdrawal
                     utf.data.return_data.number_of_transactions += 1
 
-                    utf.data.return_data.bank_statement += interface.statement.statement_message(2, utf.data.return_data.bank_deposit, value_Withdrawal)
+                    utf.data.return_data.bank_statement += interface.statement.statement_message(2, utf.data.return_data.bank_deposit, value_Withdrawal, utf.data.return_time.data_update())
 
-                    print(interface.statement.statement_message(2, utf.data.return_data.bank_deposit, value_Withdrawal))
+                    print(interface.statement.statement_message(2, utf.data.return_data.bank_deposit, value_Withdrawal, utf.data.return_time.data_update()))
 
 
                     break

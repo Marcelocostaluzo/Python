@@ -33,21 +33,25 @@ def cadestre():
         res = {
             "id" : f"{account_number}",
             "agency" : f"{agency}", 
-            "user" : f"{root[0]}"
+            "user" : root[0]
         }
 
         # armazena os dados coletados em res
         checking_account.append(res)
 
-        id = checking_account[-1]["id"]
+        id_user = checking_account[-1]["id"]
+        agency_user = checking_account[-1]["agency"]
+        name_user = checking_account[-1]["user"]['nome']
 
         print("+" + "-" * 35 + "+")
         print(f"|{'COMPLETED':^35}|")
         print("+" + "-" * 35 + "+")
-        print(checking_account)
+        print(f"| {'ID':<12} | {f'{id_user}':<18} |")
         print("+" + "-" * 35 + "+")
-
-        root.clear
+        print(f"| {'Agency':<12} | {f'{agency_user}':<18} |")
+        print("+" + "-" * 35 + "+")
+        print(f"| {'Full Name':<12} | {f'{name_user}':<18} |")
+        print("+" + "-" * 35 + "+")
 
     else:
         print("User not found!")
@@ -63,4 +67,17 @@ def busca():
     cpf_chech = str(input("CPF for the search: "))    
     # se o cpf for encontrador retorna com a resposta
     if checking_account[-1]["user"]["cpf"] == cpf_chech:
-        print(checking_account[-1]["user"]["Nome"])
+
+        nome_user = checking_account[-1]["user"]["nome"]
+        data_user = checking_account[-1]["user"]["data"]
+        cpf_user = checking_account[-1]["user"]['cpf']
+
+        
+
+        print("+" + "-" * 35 + "+")
+        print(f"| {'Full Name':<12} | {f'{nome_user}':<18} |")
+        print("+" + "-" * 35 + "+")
+        print(f"| {'Day of birth':<12} | {f'{data_user}':<18} |")
+        print("+" + "-" * 35 + "+")
+        print(f"| {'CPF':<12} | {f'{cpf_user}':<18} |")
+        print("+" + "-" * 35 + "+")

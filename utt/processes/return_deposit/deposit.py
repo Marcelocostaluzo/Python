@@ -16,31 +16,34 @@ def deposit():
         # conditional deposit
         if utt.data.return_data.number_of_transactions < utt.data.return_data.DAILY_TRANSACTIONS:
             print(interface.statement.selected_operation(1))
-            value_Deposit = float(input("Enter the amonunt to be deposited: "))
+            try:
 
-            # conditional typo 
-            if value_Deposit <= 0:
-                print("\nThe value entered is incorrect, please try again.\n")
-
-            # condition that sends the amonunt to the account
-            elif value_Deposit > 0:
-                utt.data.return_data.bank_deposit += value_Deposit
-                utt.data.return_data.number_of_transactions += 1
+                value_Deposit = float(input("Enter the amonunt to be deposited: "))
                 
+                # conditional typo 
+                if value_Deposit <= 0:
+                    print("\nThe value entered is incorrect, please try again.\n")
 
-                if utt.data.return_data.number_of_transactions == 1:
-                    utt.data.return_data.transaction_data.append(utt.data.return_time.data_update())
-                
-                utt.data.return_data.bank_statement += interface.statement.statement_message(1, utt.data.return_data.bank_deposit, value_Deposit, utt.data.return_time.data_update())
+                # condition that sends the amonunt to the account
+                elif value_Deposit > 0:
+                    utt.data.return_data.bank_deposit += value_Deposit
+                    utt.data.return_data.number_of_transactions += 1
+                    
 
-                print(interface.statement.statement_message(1, utt.data.return_data.bank_deposit, value_Deposit, utt.data.return_time.data_update()))
+                    if utt.data.return_data.number_of_transactions == 1:
+                        utt.data.return_data.transaction_data.append(utt.data.return_time.data_update())
+                    
+                    utt.data.return_data.bank_statement += interface.statement.statement_message(1, utt.data.return_data.bank_deposit, value_Deposit, utt.data.return_time.data_update())
 
-                break
+                    print(interface.statement.statement_message(1, utt.data.return_data.bank_deposit, value_Deposit, utt.data.return_time.data_update()))
 
+                    break
+
+            
+            except ValueError:
+                print("Only nunber!")
+
+            # daily limit condition
             else:
-                print("error")
-        
-        # daily limit condition
-        else:
-            print(f"\nYou have reached the daily transaction limit.\n")
-            break
+                    print(f"\nYou have reached the daily transaction limit.\n")
+                    break

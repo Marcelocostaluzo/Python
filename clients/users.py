@@ -15,13 +15,13 @@ def clean_screen():
 def user(): 
     # inforções retornadas ao usuário
     print(selected_operation(4))
-    name = str(input('Nome completo: '))
-    date = input('Data de nascimento (dd/mm/aaaa): ')
-    cpf = str(input('Digite seu cpf: '))
-    patio = str(input('Logradouro: '))
-    nunber = str(input('Número: '))
-    nbh = str(input('Bairro: '))
-    acronsym = str(input('Cidade/sigla: '))
+    name = str(input('Full name: '))
+    date = input('Day of birth (dd/mm/aaaa): ')
+    cpf = str(input('Enter your cpf: '))
+    patio = str(input('Patio: '))
+    nunber = str(input('Nunber: '))
+    nbh = str(input('Neighborhood: '))
+    acronsym = str(input('City/acronsym: '))
     address = f'{patio} - {nunber} - {nbh}  - {acronsym}'
 
     # variavel que transfomar var(date) em data
@@ -29,8 +29,8 @@ def user():
 
     # criação do cadastro do usuário
     user = {
-        "Nome": f"{name}",
-        "Data": f"{date_of_birth}",
+        "nome": f"{name}",
+        "data": f"{date_of_birth}",
         "cpf": f"{cpf}",
         "endereco": {
             "logradouro" : f"{patio}",
@@ -51,7 +51,7 @@ def user():
 
         # condição de cpf já cadastrado
         if equality > 0:
-            print("\nEste cpf já está cadastrado no nosso sistema!\n")
+            print("\nThis CPF is already registered in our system!\n")
         
         # condição de entrada de dados
         else:

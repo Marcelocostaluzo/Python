@@ -1,48 +1,146 @@
 import os
+from dadosClientes.listaClientes import Cadastro
 
-import utt.data.return_data
-from interface.menu import menu_message
-import utt.data.return_time
+"""Menu da pagina """
+login = """
+[1] - Novo Usuário
+[2] - Entra
+[0] - Sair
+"""
+menu = """
+[1] - Depositarlog
+[2] - Sacar
+[3] - Extrato
+[0] - Sair
+"""
 
-from utt.processes.return_deposit.deposit import deposit
-from utt.processes.return_withdrawal.withdrawal import withdrawal
-from clients.checking_account import cadestre, busca
-from clients.users import user
-from interface.statement import selected_operation
-# from clients.checking_account import cadestre, checking_account
+"""Funções pagina"""
+def limparConsole():
+    os.system('cls' if os.name == 'nt' else 'clean')
 
-def clean_screen():
-    os.system("cls")
+
+def pausa():
+    input("\nPressione Enter para continuar...")
+
+
+cadastro = Cadastro()
 
 while True:
-    menu_message()
+    """Laço da pagina"""
 
-    option = int(input("\nChoose an option: ")) # option's person
-    clean_screen()
+    limparConsole()
+    print(login)
+    try:
+        opcaoLogin = int(input("Escolha uma opção para prosseguir: "))
 
-    if option == 1: # deposit
-        deposit()
+        if opcaoLogin == 1:
+            limparConsole()
+            """"Criar um novo usuário"""
 
-    elif option == 2: # withdrawal
-        withdrawal()
+            nome = str(input("Nome: ").strip().capitalize())
+            sobrenome = str(input("Sobrenome: ").strip().capitalize())
+            cpf = str(input("CPF (apenas números): ").strip())
+            data = str(input("Data de nascimento: ").strip())
 
-    elif option == 3: # statement
-        print(selected_operation(3))
-        print(utt.data.return_data.bank_statement)
-    
-    elif option == 4: # create user
-        user()
+            if not cpf.isdigit() or len(cpf) != 11:
+                limparConsole()
+                print("CPF inválido")
+                pausa()
+            else:
+                print(cadastro.cadastroClientes(cpf, nome, sobrenome, data, saldo_inicial=0))
 
-    elif option == 5:
-        cadestre()
-    
-    elif option == 6:
-        busca()
+                pausa()
+        
+        elif opcaoLogin == 2:
+            limparConsole()
+            """Fazer login em uma conta já criada """
+            cpfCadastrado = input("CPF (apenas números): ").strip()
+            agencia = input("Agência: ").strip()
 
-    elif option == 0: # break choice
-        print("0")
-        break
 
-    else: # return loop
-        # system_color("There is no such choice!", RED)
-        print("error")
+            if not cpfCadastrado.isdigit() or len(cpf) != 11:
+                limparConsole()
+                print("CPF inválido")
+                pausa()
+
+            elif cadastro.loginConta(agencia, cpfCadastrado):
+                limparConsole()
+
+                cliente = cadastro.buscaPorCpf(cpfCadastrado)
+
+                print("\nUsuário encontrado!")
+                print(f"Olá {cliente.nomeCliente} {cliente.sobrenomeCliente}")
+
+                pausa()
+                while True:
+                    limparConsole()
+                    print(menu)
+                    try: 
+                        opcaoMenu = int(input("Escolha uma opção para prosseguir: "))
+
+                        if opcaoMenu == 1:
+                            limparConsole()
+                            """Área de depósito """
+
+                            if cliente:
+                                valor = float(input("Digite o valor do depósito: R$").strip())
+
+                                limparConsole()
+                                print(cliente.depositoCliente(valor))
+                                pausa()
+
+                            else:
+                                print("Cliente não encontrado!")
+                                pausa()
+
+                        elif opcaoMenu == 2:
+                            limparConsole()
+                            """"Área de saque """
+
+                            if cliente:
+                                valor = float(input("Digite o valor de saque: R$").strip())
+
+                                limparConsole()
+                                print(cliente.saqueCliente(valor))
+                                pausa()
+
+                            else:
+                                print("Cliente não encontrado")
+                        
+                                pausa()
+
+
+                        elif opcaoMenu == 3:
+                            limparConsole()
+                            """Área de extrato """
+
+                            cliente.mostrarExtrato()
+                            pausa()
+                        
+
+                        elif opcaoMenu == 0:
+                            """Área de encerramento"""
+
+                            print(f"\nSaindo...")
+                            break
+
+                    except ValueError:
+                        limparConsole()
+                        print("Valor invalido")
+                        pausa()
+
+            else:
+                print("Usuário não encontrado!")
+
+                pausa()
+
+
+        elif opcaoLogin == 0:
+            print("Saindo...")
+            break
+
+
+    except ValueError:
+        limparConsole()
+        print("Valor inválido.")
+        pausa()
